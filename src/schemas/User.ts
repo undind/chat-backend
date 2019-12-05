@@ -1,9 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
+import isEmail from 'validator/lib/isEmail';
 
 const UserSchema = new Schema({
   email: {
     type: String,
-    required: 'Email adress is required'
+    required: 'Email adress is required',
+    validate: [isEmail, 'Invalid Email'],
+    unique: true
   },
   fullname: {
     type: String,
