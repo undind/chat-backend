@@ -31,47 +31,20 @@ class DialogController {
     });
   }
 
-  // show(req: express.Request, res: express.Response) {
-  //   const id: string = req.params.id;
-  //   DialogModel.findById(id, (err, user) => {
-  //     if (err) {
-  //       return res.status(404).json({
-  //         message: 'User not found'
-  //       })
-  //     }
-  //     res.json(user)
-  //   });
-  // }
-
-  // create(req: express.Request, res: express.Response) {
-  //   const postData = {
-  //     email: req.body.email,
-  //     fullname: req.body.fullname,
-  //     password: req.body.password
-  //   };
-  
-  //   const user = new DialogModel(postData);
-  //   user.save().then((obj: any) => {
-  //     res.json(obj);
-  //   }).catch(reason => {
-  //     res.json(reason);
-  //   });
-  // }
-
-  // delete(req: express.Request, res: express.Response) {
-  //   const id: string = req.params.id;
-  //   DialogModel.findOneAndRemove({ _id: id }).then(user => {
-  //     if (user) {
-  //       res.json({
-  //         message: `User removed`
-  //       })
-  //     }
-  //   }).catch(err => {
-  //     res.json({
-  //       message: "User not found"
-  //     })
-  //   });
-  // }
+  delete(req: express.Request, res: express.Response) {
+    const id: string = req.params.id;
+    DialogModel.findOneAndRemove({ _id: id }).then(dialog => {
+      if (dialog) {
+        res.json({
+          message: `Dialog removed`
+        })
+      }
+    }).catch(() => {
+      res.json({
+        message: "Dialog not found"
+      })
+    });
+  }
 
 }
 
