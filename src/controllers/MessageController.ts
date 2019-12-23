@@ -18,19 +18,23 @@ class MessageController {
       })
   }
 
-  // create(req: express.Request, res: express.Response) {
-  //   const postData = {
-  //     author: req.body.author,
-  //     partner: req.body.partner,
-  //   };
+  create(req: express.Request, res: express.Response) {
+    const userId = '5e00ba130763d51e701e0945';
+
+    const postData = {
+      text: req.body.text,
+      dialog: req.body.dialog_id,
+      user: userId
+    };
   
-  //   const dialog = new MessageModel(postData);
-  //   dialog.save().then((obj: any) => {
-  //     res.json(obj);
-  //   }).catch(reason => {
-  //     res.json(reason);
-  //   });
-  // }
+    const message = new MessageModel(postData);
+
+    message.save().then((obj: any) => {
+      res.json(obj);
+    }).catch(reason => {
+      res.json(reason);
+    });
+  }
 
   // delete(req: express.Request, res: express.Response) {
   //   const id: string = req.params.id;
