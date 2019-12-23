@@ -19,7 +19,7 @@ class MessageController {
   }
 
   create(req: express.Request, res: express.Response) {
-    const userId = '5e00ba130763d51e701e0945';
+    const userId = '5e00ba410763d51e701e0947';
 
     const postData = {
       text: req.body.text,
@@ -36,20 +36,20 @@ class MessageController {
     });
   }
 
-  // delete(req: express.Request, res: express.Response) {
-  //   const id: string = req.params.id;
-  //   MessageModel.findOneAndRemove({ _id: id }).then(dialog => {
-  //     if (dialog) {
-  //       res.json({
-  //         message: `Dialog removed`
-  //       })
-  //     }
-  //   }).catch(() => {
-  //     res.json({
-  //       message: "Dialog not found"
-  //     })
-  //   });
-  // }
+  delete(req: express.Request, res: express.Response) {
+    const id: string = req.query.id;
+    MessageModel.findOneAndRemove({ _id: id }).then(message => {
+      if (message) {
+        res.json({
+          message: `Message removed`
+        })
+      }
+    }).catch(() => {
+      res.json({
+        message: "Message not found"
+      })
+    });
+  }
 
 }
 

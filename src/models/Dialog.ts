@@ -11,10 +11,12 @@ export interface IDialog extends Document {
     ref: string;
     require: true;
   };
-  lastMessage: { 
-    type: Schema.Types.ObjectId; 
-    ref: string; 
-  };
+  message: [
+    { 
+      type: Schema.Types.ObjectId; 
+      ref: string; 
+    }
+  ];
 }
 
 const DialogSchema = new Schema(
