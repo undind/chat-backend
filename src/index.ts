@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
 import { UserController, DialogController, MessageController } from './controllers';
 
 import { updateLastSeen } from './middlewares';
 
 const app = express();
-const port = 3000;
+dotenv.config();
 
 app.use(bodyParser.json());
 app.use(updateLastSeen);
@@ -30,4 +31,4 @@ app.get('/messages', Messages.index);
 app.post('/messages', Messages.create);
 app.delete('/messages', Messages.delete);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT, () => console.log(`Server: http://localhost:${process.env.PORT}`));
