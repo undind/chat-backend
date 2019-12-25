@@ -1,8 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { reduce } from 'lodash';
-import { IUser } from '../models/User';
 
-export default (user: IUser) => {
+interface ILoginData {
+  email: string;
+  password: string;
+}
+
+export default (user: ILoginData) => {
   let token = jwt.sign(
     {
       data: reduce(user, (result: any, value: string, key: string) => {
