@@ -1,4 +1,6 @@
 import express from 'express';
+import { validationResult } from 'express-validator';
+
 import { UserModel } from '../models';
 import { IUser } from '../models/User';
 import { createJWToken } from '../helpers';
@@ -52,6 +54,11 @@ class UserController {
       email: req.body.email,
       password: req.body.password
     };
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
 
     UserModel.findOne({ email: postData.email }, (err, user: IUser) => {
       if (err) {
