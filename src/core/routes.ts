@@ -7,27 +7,27 @@ import { updateLastSeen, checkAuth } from '../middlewares';
 import { loginValidation } from '../helpers/validations';
 
 const createRoutes = (app: express.Express, io: socket.Server) => {
-  const User = new UserController();
-  const Dialog = new DialogController();
-  const Messages = new MessageController();
+  const UserCtrl = new UserController(io);
+  const DialogCtrl = new DialogController(io);
+  const MessagesCtrl = new MessageController(io);
 
   app.use(bodyParser.json());
   app.use(updateLastSeen);
   app.use(checkAuth);
 
-  app.get('/user/me', User.getMe)
-  app.get('/user/:id', User.show);
-  app.delete('/user/:id', User.delete);
-  app.post('/user/registration', User.create);
-  app.post('/user/login', loginValidation, User.login);
+  app.get('/user/me', UserCtrl.getMe)
+  app.get('/user/:id', UserCtrl.show);
+  app.delete('/user/:id', UserCtrl.delete);
+  app.post('/user/registration', UserCtrl.create);
+  app.post('/user/login', loginValidation, UserCtrl.login);
 
-  app.get('/dialogs', Dialog.index);
-  app.delete('/dialogs/:id', Dialog.delete);
-  app.post('/dialogs', Dialog.create);
+  app.get('/dialogs', DialogCtrl.index);
+  app.delete('/dialogs/:id', DialogCtrl.delete);
+  app.post('/dialogs', DialogCtrl.create);
 
-  app.get('/messages', Messages.index);
-  app.post('/messages', Messages.create);
-  app.delete('/messages', Messages.delete);
+  app.get('/messages', MessagesCtrl.index);
+  app.post('/messages', MessagesCtrl.create);
+  app.delete('/messages', MessagesCtrl.delete);
 }
 
 export default createRoutes;

@@ -1,15 +1,20 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
+import socket from 'socket.io';
 
 import { UserModel } from '../models';
 import { IUser } from '../models/User';
 import { createJWToken } from '../helpers';
 
-
 class UserController {
+  io: socket.Server;
 
-  show(req: express.Request, res: express.Response) {
+  constructor(io: socket.Server) {
+    this.io = io;
+  }
+
+  show = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     UserModel.findById(id, (err, user) => {
       if (err) {
@@ -21,7 +26,7 @@ class UserController {
     });
   }
 
-  getMe(req: any, res: express.Response) {
+  getMe = (req: any, res: express.Response) => {
     const id: string = req.user._id;
     UserModel.findById(id, (err, user) => {
       if (err) {
@@ -33,7 +38,7 @@ class UserController {
     });
   }
 
-  create(req: express.Request, res: express.Response) {
+  create = (req: express.Request, res: express.Response) => {
     const postData = {
       email: req.body.email,
       fullname: req.body.fullname,
@@ -48,7 +53,7 @@ class UserController {
     });
   }
 
-  delete(req: express.Request, res: express.Response) {
+  delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     UserModel.findOneAndRemove({ _id: id }).then(user => {
       if (user) {
@@ -63,7 +68,7 @@ class UserController {
     });
   }
 
-  login(req: express.Request, res: express.Response) {
+  login = (req: express.Request, res: express.Response) => {
     const postData = {
       email: req.body.email,
       password: req.body.password
