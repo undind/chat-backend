@@ -1,9 +1,11 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
 
 import { UserModel } from '../models';
 import { IUser } from '../models/User';
 import { createJWToken } from '../helpers';
+
 
 class UserController {
 
@@ -61,13 +63,13 @@ class UserController {
     }
 
     UserModel.findOne({ email: postData.email }, (err, user: IUser) => {
-      if (err) {
+      if (err || !user) {
         return res.status(404).json({
           message: 'User not found'
         })
       }
 
-      if (user.password === postData.password) {
+      if (bcrypt.compareSync(postData.password, user.password)) {
         const token = createJWToken(user);
         res.json({
           status: 'success',
@@ -76,7 +78,7 @@ class UserController {
       } else {
         res.json({
           status: 'error',
-          message: 'incorrect password or email'
+          message: 'Incorrect password or email'
         })
       }
     })
