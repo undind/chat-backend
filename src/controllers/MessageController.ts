@@ -38,7 +38,15 @@ class MessageController {
     const message = new MessageModel(postData);
 
     message.save().then((obj: any) => {
-      res.json(obj);
+      obj.populate('dialog', (err: any, message: any) => {
+        if (err) {
+          return res.status(500).json({
+            message: err
+          })
+        }
+        res.json(message);
+        this.io.emit("SERVER:NEW_MESSAGE", message);
+      })
     }).catch(reason => {
       res.json(reason);
     });
