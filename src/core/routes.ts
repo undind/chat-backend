@@ -4,7 +4,7 @@ import socket from 'socket.io';
 
 import { UserController, DialogController, MessageController } from '../controllers';
 import { updateLastSeen, checkAuth } from '../middlewares';
-import { loginValidation } from '../helpers/validations';
+import { loginValidation, registerValidation } from '../helpers/validations';
 
 const createRoutes = (app: express.Express, io: socket.Server) => {
   const UserCtrl = new UserController(io);
@@ -18,8 +18,8 @@ const createRoutes = (app: express.Express, io: socket.Server) => {
   app.get('/user/me', UserCtrl.getMe)
   app.get('/user/:id', UserCtrl.show);
   app.delete('/user/:id', UserCtrl.delete);
-  app.post('/user/registration', UserCtrl.create);
-  app.post('/user/login', loginValidation, UserCtrl.login);
+  app.post('/user/signup', registerValidation, UserCtrl.create);
+  app.post('/user/signin', loginValidation, UserCtrl.login);
 
   app.get('/dialogs', DialogCtrl.index);
   app.delete('/dialogs/:id', DialogCtrl.delete);

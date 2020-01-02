@@ -44,12 +44,22 @@ class UserController {
       fullname: req.body.fullname,
       password: req.body.password
     };
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
   
     const user = new UserModel(postData);
+
     user.save().then((obj: any) => {
       res.json(obj);
     }).catch(reason => {
-      res.json(reason);
+      res.status(500).json({
+        status: 'error',
+        message: reason,
+      })
     });
   }
 
@@ -75,6 +85,7 @@ class UserController {
     };
 
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
