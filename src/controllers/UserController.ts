@@ -29,7 +29,7 @@ class UserController {
   getMe = (req: any, res: express.Response) => {
     const id: string = req.user._id;
     UserModel.findById(id, (err, user) => {
-      if (err) {
+      if (err || !user) {
         return res.status(404).json({
           message: 'User not found'
         })
@@ -65,6 +65,7 @@ class UserController {
 
   delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
+
     UserModel.findOneAndRemove({ _id: id }).then(user => {
       if (user) {
         res.json({
@@ -75,6 +76,38 @@ class UserController {
       res.json({
         message: "User not found"
       })
+    });
+  }
+
+  verify = (req: express.Request, res: express.Response) => {
+    const hash = req.query.hash;
+
+    if (!hash) {
+      return res.status(422).json({ errors: "Invalid hash" });
+    }
+
+    UserModel.findOne({ confirm_hash: hash }, (err, user) => {
+      if (err || !user) {
+        return res.status(404).json({
+          status: 'error',
+          message: "Hash not found"
+        })
+      }
+
+      user.confirmed = true;
+      user.save(err => {
+        if (err) {
+          return res.status(404).json({
+            status: 'error',
+            message: err
+          });
+        }
+
+        res.json({
+          status: 'success',
+          message: 'Аккаунт успешно подтвержден!'
+        });
+      });
     });
   }
 

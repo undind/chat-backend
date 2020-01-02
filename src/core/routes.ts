@@ -15,11 +15,12 @@ const createRoutes = (app: express.Express, io: socket.Server) => {
   app.use(updateLastSeen);
   app.use(checkAuth);
 
-  app.get('/user/me', UserCtrl.getMe)
-  app.get('/user/:id', UserCtrl.show);
-  app.delete('/user/:id', UserCtrl.delete);
+  app.get('/user/me', UserCtrl.getMe);
+  app.get('/user/verify', UserCtrl.verify);
   app.post('/user/signup', registerValidation, UserCtrl.create);
   app.post('/user/signin', loginValidation, UserCtrl.login);
+  app.get('/user/:id', UserCtrl.show);
+  app.delete('/user/:id', UserCtrl.delete);
 
   app.get('/dialogs', DialogCtrl.index);
   app.delete('/dialogs/:id', DialogCtrl.delete);
