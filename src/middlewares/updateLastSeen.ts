@@ -1,9 +1,9 @@
 import express from 'express';
 import { UserModel } from '../models';
 
-export default (req: express.Request, __: express.Response, next: express.NextFunction) => {
+export default (req: any, __: express.Response, next: express.NextFunction) => {
   UserModel.findOneAndUpdate({
-    _id: '5e00ba130763d51e701e0945'
+    _id: req.user._id
   }, {
     last_seen: new Date()
   }, {
