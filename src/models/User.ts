@@ -2,8 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
 import { generatePsswordHash } from '../helpers';
 
-import parseISO from 'date-fns/parseISO';
-import differenceInMinutes from 'date-fns/fp/differenceInMinutes';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
 
 export interface IUser extends Document {
   email: string;
@@ -47,7 +46,6 @@ const UserSchema = new Schema({
 });
 
 UserSchema.virtual('isOnline').get(function(this: any) {
-  console.log(new Date(), this.last_seen)
   return differenceInMinutes(new Date(), this.last_seen) < 5;
 });
 
