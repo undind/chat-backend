@@ -8,6 +8,7 @@ class UploadController {
 
   create = (req: express.Request, res: express.Response) => {
     const userId = req.user._id;
+    const file: any = req.file;
 
     cloudinary.v2.uploader
       .upload_stream({ resource_type: "auto" }, (error: any, result: any) => {
@@ -40,6 +41,7 @@ class UploadController {
             });
           });
       })
+      .end(file.buffer);
   };
 
   delete = () => {};

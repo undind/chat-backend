@@ -1,6 +1,8 @@
 import express from 'express';
-import { createServer } from 'http';
 import dotenv from 'dotenv';
+import { createServer } from 'http';
+
+dotenv.config();
 
 import './core/db';
 import createRoutes from './core/routes';
@@ -12,6 +14,6 @@ const io = createSocket(http);
 
 createRoutes(app, io);
 
-dotenv.config();
+const PORT = process.env.PORT || 3003;
 
-http.listen(process.env.PORT, () => console.log(`Server: http://localhost:${process.env.PORT}`));
+http.listen(PORT, () => console.log(`Server: http://localhost:${PORT}`));
