@@ -13,6 +13,21 @@ class MessageController {
 
   index = (req: express.Request, res: express.Response) => {
     const dialogId: string = req.query.dialog;
+    const userId = req.user._id;
+
+    MessageModel.updateMany(
+      { dialog: dialogId, user: { $ne: userId } },
+      { $set: { readed: true } },
+      (err: any) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            status: "error",
+            message: err
+          });
+        }
+      }
+    );
 
     MessageModel.find({ dialog: dialogId })
       .populate(['dialog', 'user'])
