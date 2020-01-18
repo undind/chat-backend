@@ -24,10 +24,12 @@ const MessageSchema = new Schema(
     readed: {
       type: Boolean,
       default: false
-    }
+    },
+    attachments: [{ type: Schema.Types.ObjectId, ref: 'UploadFile' }],
   },
   {
-    timestamps: true
+    timestamps: true,
+    usePushEach: true
   }
 );
 
